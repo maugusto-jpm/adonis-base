@@ -1,8 +1,17 @@
-# Node modules
-node_modules
+# Dependency folder
+/node_modules
+
+# Yarn files
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# Git conflit files
+*.orig
 
 # Adonis directory for storing tmp files
 tmp
 
-# The development sqlite file
+# The development sqlite files
 database/*.sqlite
+database/*.sqlite-journal
