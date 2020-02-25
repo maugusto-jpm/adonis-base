@@ -12,13 +12,23 @@
 
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory');
+const { randomBytes } = require('crypto');
 
-Factory.blueprint('App/Models/User', (faker, i, data = {}) => ({
-  name: faker.name(),
-  email: faker.email(),
-  password: faker.word({ length: 10 }),
-  github: faker.email(),
-  linkedin: faker.email(),
-  bio: faker.sentence({ words: 15 }),
+const moment = use('moment');
+
+Factory.blueprint('App/Models/User', (chance, i, data = {}) => ({
+  name: chance.name(),
+  email: chance.email(),
+  password: chance.word({ length: 10 }),
+  github: chance.email(),
+  linkedin: chance.email(),
+  bio: chance.sentence({ words: 15 }),
+  ...data,
+}));
+
+Factory.blueprint('App/Models/Token', async (chance, i, data = {}) => ({
+  token: randomBytes(128).toString('hex'),
+  type: data.type || 'login',
+  valid_until: moment().add(2, 'h').format('YYYY-MM-DD HH:mm:ss'),
   ...data,
 }));

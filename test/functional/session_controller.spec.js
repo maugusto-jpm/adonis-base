@@ -9,7 +9,7 @@ test('it should return JWT token when session created', async ({ assert, client 
     email: 'user@name.com',
     password: '123456',
   };
-  const user = await Factory
+  await Factory
     .model('App/Models/User')
     .create(sessionPayload);
 
