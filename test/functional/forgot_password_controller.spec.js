@@ -1,6 +1,6 @@
-const {
-  test, trait, beforeEach, afterEach,
-} = use('Test/Suite')('ForgotPasswordController');
+const { test, trait, beforeEach, afterEach } = use('Test/Suite')(
+  'ForgotPasswordController'
+);
 const Mail = use('Mail');
 const Hash = use('Hash');
 const moment = use('moment');
@@ -18,13 +18,14 @@ afterEach(() => {
   Mail.restore();
 });
 
-test('it should send an email with reset password instructions', async ({ assert, client }) => {
+test('it should send an email with reset password instructions', async ({
+  assert,
+  client,
+}) => {
   const sessionPayload = {
     email: 'user@name.com',
   };
-  const user = await Factory
-    .model('App/Models/User')
-    .create(sessionPayload);
+  const user = await Factory.model('App/Models/User').create(sessionPayload);
 
   const response = await client
     .post('/forgot-password')
@@ -44,16 +45,14 @@ test('it should send an email with reset password instructions', async ({ assert
 });
 
 test('should be able to reset password', async ({ assert, client }) => {
-  const user = await Factory
-    .model('App/Models/User')
-    .create({ email: 'user@name.com' });
+  const user = await Factory.model('App/Models/User').create({
+    email: 'user@name.com',
+  });
 
-  const token = await Factory
-    .model('App/Models/Token')
-    .create({
-      user_id: user.id,
-      type: 'reset_password',
-    });
+  const token = await Factory.model('App/Models/Token').create({
+    user_id: user.id,
+    type: 'reset_password',
+  });
 
   const response = await client
     .post('/reset-password')
@@ -71,17 +70,20 @@ test('should be able to reset password', async ({ assert, client }) => {
   assert.isTrue(checkPassword);
 });
 
-test('it cannot reset password after 2 hours of forgot password', async ({ assert, client }) => {
-  const user = await Factory
-    .model('App/Models/User')
-    .create({ email: 'user@name.com' });
+test('it cannot reset password after 2 hours of forgot password', async ({
+  assert,
+  client,
+}) => {
+  const user = await Factory.model('App/Models/User').create({
+    email: 'user@name.com',
+  });
 
-  const { token } = await Factory
-    .model('App/Models/Token')
-    .create({
-      user_id: user.id,
-      valid_until: moment().subtract(1, 'minute').format('YYYY-MM-DD HH:mm:ss'),
-    });
+  const { token } = await Factory.model('App/Models/Token').create({
+    user_id: user.id,
+    valid_until: moment()
+      .subtract(1, 'minute')
+      .format('YYYY-MM-DD HH:mm:ss'),
+  });
 
   const response = await client
     .post('/reset-password')

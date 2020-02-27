@@ -24,17 +24,20 @@ class ForgotPasswordController {
     await user.tokens().create({
       token,
       type: 'reset_password',
-      valid_until: moment().add(2, 'h').format(),
+      valid_until: moment()
+        .add(2, 'h')
+        .format(),
     });
 
     await Mail.send(
       'emails.reset_password',
-      { name: user.name, resetPasswordUrl }, (message) => {
+      { name: user.name, resetPasswordUrl },
+      message => {
         message
           .to(user.email)
           .from('email@provider.com')
           .subject('Recuperação de senha');
-      },
+      }
     );
 
     response.status(200).send();

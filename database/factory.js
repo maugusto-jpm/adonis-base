@@ -1,4 +1,3 @@
-
 /*
 |--------------------------------------------------------------------------
 | Factory
@@ -29,6 +28,8 @@ Factory.blueprint('App/Models/User', (chance, i, data = {}) => ({
 Factory.blueprint('App/Models/Token', async (chance, i, data = {}) => ({
   token: randomBytes(128).toString('hex'),
   type: data.type || 'login',
-  valid_until: moment().add(2, 'h').format('YYYY-MM-DD HH:mm:ss'),
+  valid_until: moment()
+    .add(2, 'h')
+    .format('YYYY-MM-DD HH:mm:ss'),
   ...data,
 }));

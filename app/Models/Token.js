@@ -12,16 +12,16 @@ class Token extends Model {
     return this.belongsTo('App/Models/User');
   }
 
-  static async findValidByToken(token) {
-    return Token
-      .query()
+  static async findByToken(token) {
+    return Token.query()
       .where({
         token,
         is_revoked: 0,
         type: 'reset_password',
       })
-      .andWhere((query) => {
-        query.whereNull('valid_until')
+      .andWhere(query => {
+        query
+          .whereNull('valid_until')
           .orWhere('valid_until', '>=', moment().format('YYYY-MM-DD HH:mm:ss'));
       })
       .first();
