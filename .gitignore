@@ -5,13 +5,24 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+.sass-cache/
 
 # Git conflit files
 *.orig
 
 # Adonis directory for storing tmp files
-tmp
+/tmp
 
 # The development sqlite files
-database/*.sqlite
-database/*.sqlite-journal
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# Atom
+/.tags*
+
+# VScode
+/.vscode
+/.history
+/.project
+
+
