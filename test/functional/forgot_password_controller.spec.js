@@ -3,8 +3,7 @@ const { test, trait, beforeEach, afterEach } = use('Test/Suite')(
 );
 const Mail = use('Mail');
 const Hash = use('Hash');
-const moment = use('moment');
-const Env = use('Env');
+const { TimeService } = require('../../app/Services');
 
 const Factory = use('Factory');
 
@@ -83,9 +82,9 @@ test('it cannot reset password after 2 hours of forgot password', async ({
   const { token } = await Factory.model('App/Models/Token').create({
     user_id: user.id,
     type: 'reset_password',
-    valid_until: moment()
+    valid_until: TimeService.now()
       .subtract(1, 'minute')
-      .format(Env.get('TIMESTAMP_FORMAT', 'YYYY-MM-DD HH:mm:ss')),
+      .formatTimestamp(),
   });
 
   const response = await client

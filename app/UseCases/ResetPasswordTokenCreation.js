@@ -1,6 +1,6 @@
 const { randomBytes } = require('crypto');
+const { TimeService } = require('../Services');
 
-const moment = use('moment');
 const Env = use('Env');
 
 class ResetPasswordTokenCreation {
@@ -32,9 +32,9 @@ class ResetPasswordTokenCreation {
     return this.user.tokens().create({
       token,
       type: 'reset_password',
-      valid_until: moment()
+      valid_until: TimeService.now()
         .add(2, 'h')
-        .format(Env.get('TIMESTAMP_FORMAT', 'YYYY-MM-DD HH:mm:ss')),
+        .formatTimestamp(),
     });
   }
 }

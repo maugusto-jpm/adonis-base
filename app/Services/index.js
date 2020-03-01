@@ -3,7 +3,7 @@ const path = require('path');
 
 const basename = path.basename(__filename);
 
-const useCases = {};
+const services = {};
 
 fs.readdirSync(__dirname)
   .filter(file => {
@@ -13,11 +13,8 @@ fs.readdirSync(__dirname)
   })
   .forEach(file => {
     // eslint-disable-next-line global-require, import/no-dynamic-require
-    const useCase = require(path.join(__dirname, file));
-    useCase.perform = function(...args) {
-      return new useCase(...args).perform(); // eslint-disable-line new-cap
-    };
-    useCases[useCase.name] = useCase;
+    const service = require(path.join(__dirname, file));
+    services[service.name] = service;
   });
 
-module.exports = useCases;
+module.exports = services;

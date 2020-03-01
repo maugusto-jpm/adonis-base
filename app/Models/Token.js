@@ -1,5 +1,4 @@
-const moment = use('moment');
-const Env = use('Env');
+const { TimeService } = require('../Services');
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model');
@@ -26,7 +25,7 @@ class Token extends Model {
         this.whereNull('valid_until').orWhere(
           'valid_until',
           '>=',
-          moment().format(Env.get('TIMESTAMP_FORMAT', 'YYYY-MM-DD HH:mm:ss'))
+          TimeService.now().formatTimestamp()
         );
       });
   }
