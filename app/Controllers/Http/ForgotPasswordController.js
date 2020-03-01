@@ -1,8 +1,8 @@
 const Mail = use('Mail');
 const Env = use('Env');
-const moment = use('moment');
-const { randomBytes } = require('crypto');
 const url = require('url');
+
+const { ResetPasswordTokenCreation } = require('../../UseCases');
 
 const User = use('App/Models/User');
 
@@ -11,22 +11,21 @@ class ForgotPasswordController {
     const email = request.input('email');
     const user = await User.findByOrFail('email', email);
 
-    const token = randomBytes(128).toString('hex');
+    await ResetPasswordTokenCreation.perform(user);
+    const { host, port, protocol } = url.parse(Env.get('FRONTEND_URL'));
+    const { token } = await user
+      .tokens()
+      .resetPassword()
+      .first();
+
     const resetPasswordUrl = url.format({
-      protocol: 'http',
-      host: Env.get('FRONTEND_URL'),
+      protocol,
+      host,
+      port,
       pathname: 'reset-password',
       query: {
         token,
       },
-    });
-
-    await user.tokens().create({
-      token,
-      type: 'reset_password',
-      valid_until: moment()
-        .add(2, 'h')
-        .format(),
     });
 
     await Mail.send(

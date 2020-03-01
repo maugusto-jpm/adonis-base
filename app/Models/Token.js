@@ -1,4 +1,5 @@
 const moment = use('moment');
+const Env = use('Env');
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model');
@@ -12,18 +13,35 @@ class Token extends Model {
     return this.belongsTo('App/Models/User');
   }
 
-  static async findByToken(token) {
-    return Token.query()
+  getIsRevoked(isRevoked) {
+    return isRevoked === 1;
+  }
+
+  static scopeValid(query) {
+    return query
       .where({
-        token,
-        is_revoked: 0,
-        type: 'reset_password',
+        is_revoked: false,
       })
-      .andWhere(query => {
-        query
-          .whereNull('valid_until')
-          .orWhere('valid_until', '>=', moment().format('YYYY-MM-DD HH:mm:ss'));
-      })
+      .andWhere(function() {
+        this.whereNull('valid_until').orWhere(
+          'valid_until',
+          '>=',
+          moment().format(Env.get('TIMESTAMP_FORMAT', 'YYYY-MM-DD HH:mm:ss'))
+        );
+      });
+  }
+
+  static scopeResetPassword(query) {
+    return query.where({
+      type: 'reset_password',
+    });
+  }
+
+  static async resetPasswordWithToken(token) {
+    return Token.query()
+      .resetPassword()
+      .valid()
+      .where({ token })
       .first();
   }
 }

@@ -11,6 +11,7 @@
 
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory');
+const Env = use('Env');
 const { randomBytes } = require('crypto');
 
 const moment = use('moment');
@@ -28,8 +29,9 @@ Factory.blueprint('App/Models/User', (chance, i, data = {}) => ({
 Factory.blueprint('App/Models/Token', async (chance, i, data = {}) => ({
   token: randomBytes(128).toString('hex'),
   type: data.type || 'login',
+  is_revoked: false,
   valid_until: moment()
     .add(2, 'h')
-    .format('YYYY-MM-DD HH:mm:ss'),
+    .format(Env.get('TIMESTAMP_FORMAT', 'YYYY-MM-DD HH:mm:ss')),
   ...data,
 }));

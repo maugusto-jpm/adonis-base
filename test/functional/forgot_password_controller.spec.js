@@ -4,6 +4,7 @@ const { test, trait, beforeEach, afterEach } = use('Test/Suite')(
 const Mail = use('Mail');
 const Hash = use('Hash');
 const moment = use('moment');
+const Env = use('Env');
 
 const Factory = use('Factory');
 
@@ -47,9 +48,10 @@ test('it should send an email with reset password instructions', async ({
 test('should be able to reset password', async ({ assert, client }) => {
   const user = await Factory.model('App/Models/User').create({
     email: 'user@name.com',
+    password: '123',
   });
 
-  const token = await Factory.model('App/Models/Token').create({
+  const { token } = await Factory.model('App/Models/Token').create({
     user_id: user.id,
     type: 'reset_password',
   });
@@ -57,7 +59,7 @@ test('should be able to reset password', async ({ assert, client }) => {
   const response = await client
     .post('/reset-password')
     .send({
-      token: token.token,
+      token,
       password: '123456',
     })
     .end();
@@ -80,9 +82,10 @@ test('it cannot reset password after 2 hours of forgot password', async ({
 
   const { token } = await Factory.model('App/Models/Token').create({
     user_id: user.id,
+    type: 'reset_password',
     valid_until: moment()
       .subtract(1, 'minute')
-      .format('YYYY-MM-DD HH:mm:ss'),
+      .format(Env.get('TIMESTAMP_FORMAT', 'YYYY-MM-DD HH:mm:ss')),
   });
 
   const response = await client

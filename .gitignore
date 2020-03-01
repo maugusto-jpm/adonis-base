@@ -13,16 +13,17 @@ yarn-debug.log*
 # Adonis directory for storing tmp files
 /tmp
 
-# The development sqlite files
-/database/*.sqlite
-/database/*.sqlite-journal
+# Test sqlite files
+*.sqlite
+*.sqlite-journal
 
 # Atom
 /.tags*
 
 # VScode
-/.vscode
+/.vscode/**
 /.history
 /.project
 
-
+# Include debug configs for VScode
+!/.vscode/launch.json
