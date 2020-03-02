@@ -4,12 +4,24 @@ const { TimeService } = require('../Services');
 const Model = use('Model');
 
 class Token extends Model {
+  static boot() {
+    super.boot();
+
+    this.addHook('afterFind', tokenInstance => {
+      tokenInstance.isRevoked = tokenInstance.isRevoked === 1;
+    });
+  }
+
   static get dates() {
     return super.dates.concat(['validUntil']);
   }
 
   user() {
     return this.belongsTo('App/Models/User', 'userId');
+  }
+
+  getIsRevoked(isRevoked) {
+    return isRevoked === 1;
   }
 
   static scopeValid(query) {

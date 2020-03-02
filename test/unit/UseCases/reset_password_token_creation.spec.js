@@ -33,9 +33,9 @@ test('should revoke others reset password tokens', async ({ assert }) => {
   await token2.reload();
   await token3.reload();
 
-  assert.equal(token1.isRevoked, 1);
-  assert.equal(token2.isRevoked, 1);
-  assert.equal(token3.isRevoked, 0);
+  assert.isTrue(token1.isRevoked);
+  assert.isTrue(token2.isRevoked);
+  assert.isFalse(token3.isRevoked);
 });
 
 test('should create another token', async ({ assert }) => {
@@ -48,6 +48,6 @@ test('should create another token', async ({ assert }) => {
 
   assert.include(createdToken.toJSON(), {
     type: 'resetPassword',
-    isRevoked: 0,
+    isRevoked: false,
   });
 });
