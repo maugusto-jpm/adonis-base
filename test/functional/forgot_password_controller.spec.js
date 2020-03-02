@@ -40,7 +40,7 @@ test('it should send an email with reset password instructions', async ({
   const token = await user.tokens().first();
 
   assert.include(token.toJSON(), {
-    type: 'reset_password',
+    type: 'resetPassword',
   });
 });
 
@@ -51,8 +51,8 @@ test('should be able to reset password', async ({ assert, client }) => {
   });
 
   const { token } = await Factory.model('App/Models/Token').create({
-    user_id: user.id,
-    type: 'reset_password',
+    userId: user.id,
+    type: 'resetPassword',
   });
 
   const response = await client
@@ -66,7 +66,7 @@ test('should be able to reset password', async ({ assert, client }) => {
   await user.reload();
 
   response.assertStatus(200);
-  const checkPassword = await Hash.verify('123456', user.password_hash);
+  const checkPassword = await Hash.verify('123456', user.passwordHash);
 
   assert.isTrue(checkPassword);
 });
@@ -80,9 +80,9 @@ test('it cannot reset password after 2 hours of forgot password', async ({
   });
 
   const { token } = await Factory.model('App/Models/Token').create({
-    user_id: user.id,
-    type: 'reset_password',
-    valid_until: TimeService.now()
+    userId: user.id,
+    type: 'resetPassword',
+    validUntil: TimeService.now()
       .subtract(1, 'minute')
       .formatTimestamp(),
   });
@@ -98,7 +98,7 @@ test('it cannot reset password after 2 hours of forgot password', async ({
   await user.reload();
 
   response.assertStatus(400);
-  const checkPassword = await Hash.verify('123456', user.password_hash);
+  const checkPassword = await Hash.verify('123456', user.passwordHash);
 
   assert.isFalse(checkPassword);
   assert.equal(response.text, 'No valid token was found');

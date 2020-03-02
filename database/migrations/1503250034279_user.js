@@ -10,7 +10,7 @@ class UserSchema extends Schema {
         .string('email')
         .notNullable()
         .unique();
-      table.string('password_hash').notNullable();
+      table.string('passwordHash').notNullable();
       table.string('bio');
       table.string('github');
       table.string('linkedin');

@@ -5,25 +5,21 @@ const Model = use('Model');
 
 class Token extends Model {
   static get dates() {
-    return super.dates.concat(['valid_until']);
+    return super.dates.concat(['validUntil']);
   }
 
   user() {
-    return this.belongsTo('App/Models/User');
-  }
-
-  getIsRevoked(isRevoked) {
-    return isRevoked === 1;
+    return this.belongsTo('App/Models/User', 'userId');
   }
 
   static scopeValid(query) {
     return query
       .where({
-        is_revoked: false,
+        isRevoked: false,
       })
       .andWhere(function() {
-        this.whereNull('valid_until').orWhere(
-          'valid_until',
+        this.whereNull('validUntil').orWhere(
+          'validUntil',
           '>=',
           TimeService.now().formatTimestamp()
         );
@@ -32,7 +28,7 @@ class Token extends Model {
 
   static scopeResetPassword(query) {
     return query.where({
-      type: 'reset_password',
+      type: 'resetPassword',
     });
   }
 

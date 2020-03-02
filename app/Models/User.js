@@ -6,7 +6,7 @@ const Hash = use('Hash');
 
 class User extends Model {
   static get hidden() {
-    return ['password_hash'];
+    return ['passwordHash'];
   }
 
   static boot() {
@@ -18,7 +18,7 @@ class User extends Model {
      */
     this.addHook('beforeSave', async userInstance => {
       if (userInstance.dirty.password) {
-        userInstance.password_hash = await Hash.make(userInstance.password);
+        userInstance.passwordHash = await Hash.make(userInstance.password);
         delete userInstance.$attributes.password;
       }
     });

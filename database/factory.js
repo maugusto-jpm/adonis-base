@@ -27,8 +27,8 @@ Factory.blueprint('App/Models/User', (chance, i, data = {}) => ({
 Factory.blueprint('App/Models/Token', async (chance, i, data = {}) => ({
   token: randomBytes(128).toString('hex'),
   type: data.type || 'login',
-  is_revoked: false,
-  valid_until: TimeService.now()
+  isRevoked: false,
+  validUntil: TimeService.now()
     .add(2, 'h')
     .formatTimestamp(),
   ...data,

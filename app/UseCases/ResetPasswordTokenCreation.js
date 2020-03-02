@@ -20,7 +20,7 @@ class ResetPasswordTokenCreation {
       .fetch();
 
     otherTokens.rows.forEach(async token => {
-      token.is_revoked = true;
+      token.isRevoked = true;
       return token.save();
     });
   }
@@ -31,8 +31,8 @@ class ResetPasswordTokenCreation {
     ).toString('hex');
     return this.user.tokens().create({
       token,
-      type: 'reset_password',
-      valid_until: TimeService.now()
+      type: 'resetPassword',
+      validUntil: TimeService.now()
         .add(2, 'h')
         .formatTimestamp(),
     });

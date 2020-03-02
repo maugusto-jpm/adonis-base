@@ -11,21 +11,21 @@ test('should revoke others reset password tokens', async ({ assert }) => {
   const user = await Factory.model('App/Models/User').create();
 
   const token1 = await Factory.model('App/Models/Token').create({
-    user_id: user.id,
-    type: 'reset_password',
-    is_revoked: false,
+    userId: user.id,
+    type: 'resetPassword',
+    isRevoked: false,
   });
 
   const token2 = await Factory.model('App/Models/Token').create({
-    user_id: user.id,
-    type: 'reset_password',
-    is_revoked: false,
+    userId: user.id,
+    type: 'resetPassword',
+    isRevoked: false,
   });
 
   const token3 = await Factory.model('App/Models/Token').create({
-    user_id: user.id,
+    userId: user.id,
     type: 'login',
-    is_revoked: false,
+    isRevoked: false,
   });
 
   await ResetPasswordTokenCreation.perform(user);
@@ -33,9 +33,9 @@ test('should revoke others reset password tokens', async ({ assert }) => {
   await token2.reload();
   await token3.reload();
 
-  assert.equal(token1.is_revoked, 1);
-  assert.equal(token2.is_revoked, 1);
-  assert.equal(token3.is_revoked, 0);
+  assert.equal(token1.isRevoked, 1);
+  assert.equal(token2.isRevoked, 1);
+  assert.equal(token3.isRevoked, 0);
 });
 
 test('should create another token', async ({ assert }) => {
@@ -47,7 +47,7 @@ test('should create another token', async ({ assert }) => {
     .first();
 
   assert.include(createdToken.toJSON(), {
-    type: 'reset_password',
-    is_revoked: false,
+    type: 'resetPassword',
+    isRevoked: 0,
   });
 });
