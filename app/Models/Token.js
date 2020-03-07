@@ -1,4 +1,4 @@
-const { TimeService } = require('../Services');
+const { TimeService } = use('Services');
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model');
@@ -18,7 +18,7 @@ class Token extends Model {
   }
 
   user() {
-    return this.belongsTo('App/Models/User', 'userId');
+    return this.belongsTo('User', 'userId');
   }
 
   static scopeValid(query) {

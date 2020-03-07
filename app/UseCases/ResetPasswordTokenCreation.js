@@ -1,5 +1,5 @@
-const { randomBytes } = require('crypto');
-const { TimeService } = require('../Services');
+const { randomBytes } = use('crypto');
+const { TimeService } = use('Services');
 
 const Env = use('Env');
 

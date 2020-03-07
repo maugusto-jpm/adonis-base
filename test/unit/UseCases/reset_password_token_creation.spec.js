@@ -1,9 +1,9 @@
 const { test, trait } = use('Test/Suite')('ResetPasswordTokenCreation');
 
 const Factory = use('Factory');
-const Token = use('App/Models/Token');
+const Token = use('Token');
 
-const { ResetPasswordTokenCreation } = require('../../../app/UseCases');
+const { ResetPasswordTokenCreation } = use('UseCases');
 
 trait('DatabaseTransactions');
 

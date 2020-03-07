@@ -1,4 +1,4 @@
-const { hooks } = require('@adonisjs/ignitor');
+const { hooks } = use('@adonisjs/ignitor');
 
 hooks.after.providersBooted(() => {
   const Exception = use('Exception');

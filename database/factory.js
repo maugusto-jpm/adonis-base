@@ -11,8 +11,8 @@
 
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory');
-const { randomBytes } = require('crypto');
-const { TimeService } = require('../app/Services');
+const { randomBytes } = use('crypto');
+const { TimeService } = use('Services');
 
 Factory.blueprint('App/Models/User', (chance, i, data = {}) => ({
   name: chance.name(),

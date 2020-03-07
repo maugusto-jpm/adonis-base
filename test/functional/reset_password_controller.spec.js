@@ -1,7 +1,7 @@
 const { test, trait } = use('Test/Suite')('ResetPasswordController');
 const Factory = use('Factory');
 const Hash = use('Hash');
-const { TimeService } = require('../../app/Services');
+const { TimeService } = use('Services');
 
 trait('Test/ApiClient');
 trait('DatabaseTransactions');

@@ -1,4 +1,4 @@
-const Token = use('App/Models/Token');
+const Token = use('Token');
 
 class ResetPasswordController {
   async index({ request, response }) {

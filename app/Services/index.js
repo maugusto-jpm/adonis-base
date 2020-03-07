@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = use('fs');
+const path = use('path');
 
 const basename = path.basename(__filename);
 

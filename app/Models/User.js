@@ -21,7 +21,7 @@ class User extends Model {
   }
 
   tokens() {
-    return this.hasMany('App/Models/Token');
+    return this.hasMany('Token');
   }
 }
 

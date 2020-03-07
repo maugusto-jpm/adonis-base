@@ -1,10 +1,10 @@
 const Mail = use('Mail');
 const Env = use('Env');
-const url = require('url');
+const url = use('url');
 
-const { ResetPasswordTokenCreation } = require('../../UseCases');
+const { ResetPasswordTokenCreation } = use('UseCases');
 
-const User = use('App/Models/User');
+const User = use('User');
 
 class ForgotPasswordController {
   async index({ request, response }) {

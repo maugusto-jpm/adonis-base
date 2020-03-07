@@ -1,4 +1,4 @@
-const { TimeService } = require('../../../app/Services');
+const { TimeService } = use('Services');
 
 const Env = use('Env');
 const momentLib = use('moment-timezone');

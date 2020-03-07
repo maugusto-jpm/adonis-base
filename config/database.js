@@ -3,7 +3,7 @@ const Env = use('Env');
 
 /** @type {import('@adonisjs/ignitor/src/Helpers')} */
 const Helpers = use('Helpers');
-const { knexSnakeCaseMappers } = require('objection');
+const { knexSnakeCaseMappers } = use('objection');
 
 module.exports = {
   /*

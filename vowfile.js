@@ -9,7 +9,7 @@
 */
 
 // Uncomment when want to run migrations
-const ace = require('@adonisjs/ace');
+const ace = use('@adonisjs/ace');
 
 module.exports = (cli, runner) => {
   runner.before(async () => {
