@@ -8,7 +8,8 @@ class Token extends Model {
     super.boot();
 
     this.addHook('afterFind', tokenInstance => {
-      tokenInstance.isRevoked = tokenInstance.isRevoked === 1;
+      tokenInstance.isRevoked =
+        tokenInstance.isRevoked === 1 || tokenInstance.isRevoked === true;
     });
   }
 
@@ -18,10 +19,6 @@ class Token extends Model {
 
   user() {
     return this.belongsTo('App/Models/User', 'userId');
-  }
-
-  getIsRevoked(isRevoked) {
-    return isRevoked === 1;
   }
 
   static scopeValid(query) {

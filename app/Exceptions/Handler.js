@@ -32,9 +32,9 @@ class ExceptionHandler extends BaseExceptionHandler {
    *
    * @return {void}
    */
-  async report(error) {
-    console.log(error); // eslint-disable-line no-console
-  }
+  // async report(error) {
+  //   console.log(error); // eslint-disable-line no-console
+  // }
 }
 
 module.exports = ExceptionHandler;
