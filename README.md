@@ -9,6 +9,7 @@ This is a base of an AdonisJs application API only, precofigured with:
 - SQLite
 - PostgreSQL
 - ESLint and Prettier
+- Debugging using [Visual Studio Code](https://code.visualstudio.com)
 
 ## Dependências
 
