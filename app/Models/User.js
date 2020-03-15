@@ -23,6 +23,10 @@ class User extends Model {
   tokens() {
     return this.hasMany('Token');
   }
+
+  checkPassword(password) {
+    return Hash.verify(password, this.passwordHash);
+  }
 }
 
 module.exports = User;

@@ -1,20 +1,23 @@
-const Token = use('Token');
+const { PasswordResetting } = use('UseCases');
+const NoTokenWasProvidedException = use(
+  'App/Exceptions/NoTokenWasProvidedException'
+);
 
 class ResetPasswordController {
   async index({ request, response }) {
     const { token, password } = request.only(['token', 'password']);
-    const userToken = await Token.resetPasswordWithToken(token);
 
-    if (!userToken) {
-      return response.status(400).send('No valid token was found');
+    try {
+      await PasswordResetting.perform(token, password);
+
+      return response.status(200).send();
+    } catch (exception) {
+      if (exception instanceof NoTokenWasProvidedException) {
+        return response.status(400).send('No valid token was found');
+      }
+
+      throw exception;
     }
-
-    const user = await userToken.user().fetch();
-
-    user.password = password;
-    await user.save();
-
-    return response.status(200).send();
   }
 }
 

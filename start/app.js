@@ -59,7 +59,7 @@ const aliases = {
 | Here you store ace commands for your package
 |
 */
-const commands = [];
+const commands = ['App/Commands/CreateDatabase'];
 
 module.exports = {
   providers,

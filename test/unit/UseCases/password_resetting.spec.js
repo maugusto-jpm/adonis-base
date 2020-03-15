@@ -1,12 +1,17 @@
-const { test, trait } = use('Test/Suite')('ResetPasswordController');
+const { test, trait } = use('Test/Suite')('PasswordResetting');
+
+const NoTokenWasProvidedException = use(
+  'App/Exceptions/NoTokenWasProvidedException'
+);
 const Factory = use('Factory');
 const Hash = use('Hash');
 const { TimeService } = use('Services');
 
-trait('Test/ApiClient');
+const { PasswordResetting } = use('UseCases');
+
 trait('DatabaseTransactions');
 
-test('should be able to reset password', async ({ assert, client }) => {
+test('should change password when token is valid', async ({ assert }) => {
   const user = await Factory.model('App/Models/User').create({
     email: 'user@name.com',
     password: '123',
@@ -17,25 +22,19 @@ test('should be able to reset password', async ({ assert, client }) => {
     type: 'resetPassword',
   });
 
-  const response = await client
-    .post('/reset-password')
-    .send({
-      token: token.token,
-      password: '123456',
-      isRevoked: false,
-    })
-    .end();
+  await PasswordResetting.perform(token.token, '123456');
 
   await user.reload();
-  response.assertStatus(200);
+  await token.reload();
+
   const checkPassword = await Hash.verify('123456', user.passwordHash);
 
   assert.isTrue(checkPassword);
+  assert.isTrue(token.isRevoked);
 });
 
 test('it cannot reset password when valid token is not found', async ({
   assert,
-  client,
 }) => {
   const user = await Factory.model('App/Models/User').create({
     password: '123',
@@ -52,32 +51,25 @@ test('it cannot reset password when valid token is not found', async ({
     isRevoked: true,
   });
 
-  const responseForLoginToken = await client
-    .post('/reset-password')
-    .send({
-      token: loginToken.token,
-      password: '123456',
-    })
-    .end();
+  try {
+    await PasswordResetting.perform(loginToken.token, '123456');
+  } catch (exception) {
+    assert.instanceOf(exception, NoTokenWasProvidedException);
+  }
 
-  const responseForRevokedToken = await client
-    .post('/reset-password')
-    .send({
-      token: revokedToken.token,
-      password: '123456',
-    })
-    .end();
+  try {
+    await PasswordResetting.perform(revokedToken.token, '123456');
+  } catch (exception) {
+    assert.instanceOf(exception, NoTokenWasProvidedException);
+  }
 
-  responseForLoginToken.assertStatus(400);
-  assert.equal(responseForLoginToken.text, 'No valid token was found');
+  const checkPassword = await Hash.verify('123456', user.passwordHash);
 
-  responseForRevokedToken.assertStatus(400);
-  assert.equal(responseForRevokedToken.text, 'No valid token was found');
+  assert.isFalse(checkPassword);
 });
 
 test('it cannot reset password after 2 hours of forgot password', async ({
   assert,
-  client,
 }) => {
   const user = await Factory.model('App/Models/User').create({
     email: 'user@name.com',
@@ -91,16 +83,14 @@ test('it cannot reset password after 2 hours of forgot password', async ({
       .formatTimestamp(),
   });
 
-  const response = await client
-    .post('/reset-password')
-    .send({
-      token,
-      password: '123456',
-    })
-    .end();
+  try {
+    await PasswordResetting.perform(token, '123456');
+  } catch (exception) {
+    assert.instanceOf(exception, NoTokenWasProvidedException);
+  }
 
   await user.reload();
+  const checkPassword = await Hash.verify('123456', user.passwordHash);
 
-  response.assertStatus(400);
-  assert.equal(response.text, 'No valid token was found');
+  assert.isFalse(checkPassword);
 });

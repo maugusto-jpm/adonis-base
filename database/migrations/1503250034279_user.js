@@ -11,9 +11,6 @@ class UserSchema extends Schema {
         .notNullable()
         .unique();
       table.string('passwordHash').notNullable();
-      table.string('bio');
-      table.string('github');
-      table.string('linkedin');
       table.timestamps();
     });
   }

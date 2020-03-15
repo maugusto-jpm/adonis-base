@@ -16,6 +16,7 @@ const Route = use('Route');
 
 Route.get('/', () => ({ greeting: 'Hello world in JSON' }));
 
+Route.post('/signin', 'RegistrationController.store');
 Route.post('/sessions', 'SessionController.store');
 Route.post('/forgot-password', 'ForgotPasswordController.index');
 Route.post('/reset-password', 'ResetPasswordController.index');
