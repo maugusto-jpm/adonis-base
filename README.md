@@ -11,7 +11,7 @@ This is a base of an AdonisJs application API only, precofigured with:
 - ESLint and Prettier
 - Debugging using [Visual Studio Code](https://code.visualstudio.com)
 
-## Dependências
+## Dependencies
 
 - [Yarn](https://yarnpkg.com/) - package manager;
 - [Docker Compose](https://docs.docker.com/compose/) - containers manager (optional);
